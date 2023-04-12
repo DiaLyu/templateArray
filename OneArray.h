@@ -13,20 +13,26 @@ public:
     OneArray() : len(0) {}
 
     OneArray(size_t len) {
-        if (len <= 0)
-            throw string("Количество элементов должно быть больше 0");
+        if (len == 0)
+            throw string("The number of elements must be greater than 0");
         assign(len);
     }
 
     OneArray(const OneArray& data){
-        assign(data.len);
-        for (size_t i = 0; i < data.len; i++) {
-            arr[i] = data[i];
+        if (data.len != 0) {
+            assign(data.len);
+            for (size_t i = 0; i < data.len; i++) {
+                arr[i] = data[i];
+            }
         }
+        else
+            len = data.len;
     }
 
-    // инициализация и заполнение массива
+    // initializing and filling the array
     void assign(size_t count) {
+        if (count == 0)
+            throw "The array cannot be initialized";
         len = count;
         arr = new T[count];
         for (size_t i = 0; i < len; i++)
@@ -35,42 +41,42 @@ public:
 
     void writeRand() {
         if (len == 0)
-            throw string("Массив не инициализирован");
+            throw string("The array is not initialized");
         srand(time(NULL));
         for (size_t i = 0; i < len; i++)
             arr[i] = (T)(1 + rand() % 100);
     }
 
-    // Доступ по индексу
+    // Index Access
     T getElem(size_t index) {
         if (len == 0)
-            throw string("Массив не инициализирован");
+            throw string("The array is not initialized");
         if (index < 0 || index >= len)
-            throw string("Выход за границу массива");
+            throw string("The index goes outside the array");
         return *(arr + index);
     } 
 
     T& operator[] (size_t index){
         if (len == 0)
-            throw string("Массив не инициализирован");
+            throw string("The array is not initialized");
         if (index < 0 || index >= len)
-            throw string("Выход за границу массива");
+            throw string("The index goes outside the array");
         return *(arr + index);
     }
 
     const T& operator[] (size_t index) const {
         if (len == 0)
-            throw string("Массив не инициализирован");
+            throw string("The array is not initialized");
         if (index < 0 || index >= len)
-            throw string("Выход за границу массива");
+            throw string("The index goes outside the array");
         return *(arr + index);
     }
 
     void setElem(size_t index, T elem) {
         if (len == 0)
-            throw string("Массив не инициализирован");
+            throw string("The array is not initialized");
         if (index < 0 || index >= len)
-            throw string("Выход за границу массива");
+            throw string("The index goes outside the array");
         arr[index] = elem;
     }
 
@@ -104,12 +110,12 @@ public:
         return *this;
     }
 
-    // Количество элементов
+    // Number of elements
     size_t getLength() {
         return len;
     }
 
-    //  интерфейс, реализующий концепцию итераторов
+    //  an interface that implements the concept of iterators
     class Iterator {
 
         T* elem;
@@ -136,9 +142,9 @@ public:
     Iterator begin() { return arr; }
     Iterator end() { return arr + len; }
 
-    // изменение размера (уменьшение, увеличение размера)
+    // changing the size (decreasing, increasing the size)
     void changeLength(size_t change) {
-        if (len + change < 0) {
+        if (len + change <= 0) {
            clear();
         }
         else {
@@ -170,9 +176,9 @@ public:
     // Вставка элементов в произвольную позицию
     void addIndexArr(size_t index, T elem) {
         if (len == 0)
-            throw string("Массив не инициализирован");
+            throw string("The array is not initialized");
         if (index < 0 || index > len)
-            throw string("Индекс выходит за пределы массива");
+            throw string("The index goes outside the array");
         T* newArr = new T[len + 1];
         size_t addIndex = 0;
         for (size_t i = 0; i < len + 1; i++) {
@@ -191,14 +197,14 @@ public:
         delete[] newArr;
     }
 
-    // Удаление элементов
+    // Deleting Elements
     void delIndexArr(size_t index) {
         if (len == 0)
-            throw string("Массив не инициализирован");
+            throw string("The array is not initialized");
         if (index < 0 || index >= len)
-            throw string("Индекс выходит за пределы массива");
+            throw string("The index goes outside the array");
         if (len == 0)
-            throw "Массив пуст";
+            throw "The array is empty";
 
         T* newArr = new T[len - 1];
         size_t addIndex = 0;
@@ -226,10 +232,10 @@ public:
         swap(obj.arr, obj1.arr);
     }
 
-    // чистка массива
+    // cleaning the array
     void clear() {
         if (len == 0)
-            throw string("Массив уже очищен");
+            throw string("The array has already been cleared");
         len = 0;
         delete[] arr;
     }

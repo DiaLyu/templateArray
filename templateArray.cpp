@@ -80,12 +80,15 @@ int main()
         it++;
     }
 
+    OneArray<float> test2(arr);
+    test2.assign(5);
+
     cout << "----- addIndexArr ------" << endl;
     try {
-        arr.addIndexArr(0, 12);
-        cout << "Length arr = " << arr.getLength() << endl;
-        it = OneArray<float>::Iterator(arr.begin());
-        while (it != arr.end()) {
+        test2.addIndexArr(0, 12);
+        cout << "Length arr = " << test2.getLength() << endl;
+        it = OneArray<float>::Iterator(test2.begin());
+        while (it != test2.end()) {
             cout << *it << endl;
             it++;
         }
